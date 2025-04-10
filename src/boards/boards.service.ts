@@ -1,49 +1,39 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
-import { Board } from './entities/board.entity';
+import { BoardRepository } from './boards.repository.interface';
 
 import { NotFoundException } from '@nestjs/common';
 
 @Injectable()
 export class BoardsService {
-  private boards: Board[] = [];
-  private id: number = 1;
+  constructor(
+    @Inject('BoardRepository') private readonly boardRepo: BoardRepository,
+  ) {}
 
   create(createBoardDto: CreateBoardDto) {
-    const newBoard = {
-      id: this.id++,
-      ...createBoardDto,
-    };
-    this.boards.push(newBoard);
-    return '201';
+    return this.boardRepo.create(createBoardDto);
   }
 
   findAll() {
-    return this.boards;
+    return this.boardRepo.findAll();
   }
 
   findOne(id: number) {
-    const board = this.boards.find((b) => b.id == id);
-    if (!board)
-      throw new NotFoundException(`게시글 ${id}번을 찾을 수 없습니다.`);
-
+    const board = this.boardRepo.findById(id);
+    if (!board) throw new NotFoundException('게시글 없음');
     return board;
   }
 
   update(id: number, updateBoardDto: UpdateBoardDto) {
-    const board = this.boards.find((b) => b.id == id);
+    const board = this.boardRepo.update(id, updateBoardDto);
     if (!board)
       throw new NotFoundException(`게시글 ${id}번을 찾을 수 없습니다.`);
-
-    board.title = updateBoardDto.title ?? board.title;
-    board.content = updateBoardDto.content ?? board.content;
-    return '200';
+    return board;
   }
 
   remove(id: number) {
-    this.boards = this.boards.filter((b) => b.id !== id);
-
-    return '200';
+    const ok = this.boardRepo.remove(id);
+    if (!ok) throw new NotFoundException(`게시글 ${id}번을 찾을 수 없습니다.`);
   }
 }

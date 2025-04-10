@@ -25,7 +25,8 @@ export class BoardsController {
   @ApiResponse({ status: 201, description: '작성 성공' })
   @ApiBody({ type: CreateBoardDto })
   create(@Body() createBoardDto: CreateBoardDto) {
-    return this.boardsService.create(createBoardDto);
+    this.boardsService.create(createBoardDto);
+    return '201';
   }
 
   @Get()
@@ -56,7 +57,8 @@ export class BoardsController {
   @ApiResponse({ status: 200, description: '수정 성공' })
   @ApiBody({ type: UpdateBoardDto })
   update(@Param('id') id: string, @Body() updateBoardDto: UpdateBoardDto) {
-    return this.boardsService.update(+id, updateBoardDto);
+    this.boardsService.update(+id, updateBoardDto);
+    return '200';
   }
 
   @Delete(':id')
@@ -66,6 +68,7 @@ export class BoardsController {
   })
   @ApiResponse({ status: 200, description: '삭제 성공' })
   remove(@Param('id') id: string) {
-    return this.boardsService.remove(+id);
+    this.boardsService.remove(+id);
+    return '200';
   }
 }
