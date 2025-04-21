@@ -12,5 +12,6 @@ import { MemoryUserRepository } from './users.repository.memory';
       useClass: MemoryUserRepository,
     },
   ],
+  exports: ['UserRepository'],
 })
 export class UsersModule {}
