@@ -4,14 +4,19 @@ import { UpdateBoardDto } from './dto/update-board.dto';
 import { BoardRepository } from './boards.repository.interface';
 
 import { NotFoundException } from '@nestjs/common';
+import { UserRepository } from 'src/users/users.repository.interface';
 
 @Injectable()
 export class BoardsService {
   constructor(
     @Inject('BoardRepository') private readonly boardRepo: BoardRepository,
+
+    @Inject('UserRepository') private readonly userRepo: UserRepository,
   ) {}
 
   create(createBoardDto: CreateBoardDto) {
+    const user = this.userRepo.findById(createBoardDto.authorId);
+    if (!user) throw new NotFoundException('존재하지 않는 사용자입니다.');
     return this.boardRepo.create(createBoardDto);
   }
 
