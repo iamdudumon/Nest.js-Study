@@ -6,6 +6,7 @@ export interface BoardRepository {
   create(dto: CreateBoardDto): Board;
   findAll(): Board[];
   findById(id: number): Board | undefined;
+  findByAuthorId(authorId: number): Board | undefined;
   update(id: number, dto: UpdateBoardDto): Board | undefined;
   remove(id: number): boolean;
 }

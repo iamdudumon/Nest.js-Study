@@ -26,6 +26,10 @@ export class MemoryBoardRepository implements BoardRepository {
     return this.boards.find((b) => b.id === id);
   }
 
+  findByAuthorId(authorId: number): Board | undefined {
+    return this.boards.find((b) => b.authorId === authorId);
+  }
+
   update(id: number, updateDto: UpdateBoardDto): Board | undefined {
     const board = this.findById(id);
     if (!board) return undefined;
