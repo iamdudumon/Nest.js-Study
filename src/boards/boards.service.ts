@@ -4,14 +4,16 @@ import { UpdateBoardDto } from './dto/update-board.dto';
 import { BoardRepository } from './boards.repository.interface';
 
 import { NotFoundException } from '@nestjs/common';
-import { UserRepository } from 'src/users/users.repository.interface';
+import { UserRepository } from 'src/users/repository/users.repository.interface';
+
+import { USER_REPO } from '../common/constants';
 
 @Injectable()
 export class BoardsService {
   constructor(
     @Inject('BoardRepository') private readonly boardRepo: BoardRepository,
 
-    @Inject('UserRepository') private readonly userRepo: UserRepository,
+    @Inject(USER_REPO) private readonly userRepo: UserRepository,
   ) {}
 
   create(createBoardDto: CreateBoardDto) {
