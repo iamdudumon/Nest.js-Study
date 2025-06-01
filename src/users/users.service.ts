@@ -15,8 +15,13 @@ export class UsersService {
     @Inject('BoardRepository') private readonly boardRepo: BoardRepository,
   ) {}
 
-  create(createUserDto: CreateUserDto) {
-    return this.userRepo.save(createUserDto);
+  async create(createUserDto: CreateUserDto) {
+    try {
+      await this.userRepo.save(createUserDto);
+    } catch (err) {
+      // Todo: 예외 처리
+      throw err;
+    }
   }
 
   findAll() {
@@ -27,6 +32,7 @@ export class UsersService {
     const user: User = await this.userRepo.findById(id);
     if (!user)
       throw new NotFoundException(`사용자 ${id}번을 찾을 수 없습니다.`);
+
     return user;
   }
 
@@ -34,9 +40,6 @@ export class UsersService {
     const user = await this.userRepo.findById(id);
     if (!user) throw new NotFoundException('사용자 없음');
 
-    // const boards: Board = this.boardRepo.findByAuthorId(id);
-    // if (!boards)
-    //   throw new NotFoundException(`사용자 ${id}번을 찾을 수 없습니다.`);
     return this.boardRepo.findByAuthorId(id);
   }
 
@@ -44,12 +47,14 @@ export class UsersService {
     const user: User = await this.userRepo.update(id, updateUserDto);
     if (!user)
       throw new NotFoundException(`사용자 ${id}번을 찾을 수 없습니다.`);
+
     return user;
   }
 
   async remove(id: number) {
     const ok = await this.userRepo.remove(id);
     if (!ok) throw new NotFoundException(`사용자 ${id}번을 찾을 수 없습니다.`);
+
     return true;
   }
 }
