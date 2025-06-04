@@ -111,7 +111,7 @@ export class UsersController {
     summary: '특정 사용자 삭제',
     description: '사용자 번호와 일치하는 사용자 삭제합니다.',
   })
-  @ApiResponse({ status: 200, description: '삭제 성공' })
+  @ApiResponse({ status: 204, description: '삭제 성공' })
   async remove(@Param('id') id: string) {
     await this.usersService.remove(+id);
   }

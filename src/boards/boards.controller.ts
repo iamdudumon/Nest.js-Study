@@ -27,7 +27,7 @@ export class BoardsController {
   @ApiResponse({ status: 201, description: '작성 성공' })
   @ApiBody({ type: CreateBoardDto })
   async create(@Body() createBoardDto: CreateBoardDto) {
-    const board = this.boardsService.create(createBoardDto);
+    const board = await this.boardsService.create(createBoardDto);
 
     return {
       message: '게시글 생성에 성공했습니다.',
@@ -105,7 +105,7 @@ export class BoardsController {
     summary: '특정 게시글 삭제',
     description: '게시글 번호와 일치하는 게시글을 삭제합니다.',
   })
-  @ApiResponse({ status: 200, description: '삭제 성공' })
+  @ApiResponse({ status: 204, description: '삭제 성공' })
   async remove(@Param('id') id: number) {
     await this.boardsService.remove(id);
   }
