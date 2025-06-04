@@ -3,3 +3,5 @@
 export const USER_REPO = 'USER_REPO_INTERFACE';
 
 export const BOARD_REPO = 'BOARD_REPO_INTERFACE';
+
+export const COMMENT_REPO = 'COMMENT_REPO_INTERFACE';
