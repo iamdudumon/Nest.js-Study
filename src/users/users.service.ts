@@ -3,21 +3,21 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { UserRepository } from './repository/users.repository.interface';
-import { BoardRepository } from 'src/boards/boards.repository.interface';
+import { BoardRepository } from 'src/boards/repository/boards.repository.interface';
 
-import { USER_REPO } from '../common/constants';
+import { USER_REPO, BOARD_REPO } from '../common/constants';
 
 @Injectable()
 export class UsersService {
   constructor(
     @Inject(USER_REPO) private readonly userRepo: UserRepository,
 
-    @Inject('BoardRepository') private readonly boardRepo: BoardRepository,
+    @Inject(BOARD_REPO) private readonly boardRepo: BoardRepository,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
     try {
-      await this.userRepo.save(createUserDto);
+      return await this.userRepo.save(createUserDto);
     } catch (err) {
       // Todo: 예외 처리
       throw err;

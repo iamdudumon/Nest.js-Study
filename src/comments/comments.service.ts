@@ -1,9 +1,11 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { CommentRepository } from './comments.repoistory.interface';
-import { BoardRepository } from 'src/boards/boards.repository.interface';
+import { BoardRepository } from 'src/boards/repository/boards.repository.interface';
 
 import { NotFoundException } from '@nestjs/common';
+
+import { BOARD_REPO } from 'src/common/constants';
 
 @Injectable()
 export class CommentsService {
@@ -11,7 +13,7 @@ export class CommentsService {
     @Inject('CommentRepository')
     private readonly commentRepo: CommentRepository,
 
-    @Inject('BoardRepository') private readonly boardRepo: BoardRepository,
+    @Inject(BOARD_REPO) private readonly boardRepo: BoardRepository,
   ) {}
 
   create(createCommentDto: CreateCommentDto) {

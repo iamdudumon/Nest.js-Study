@@ -1,19 +1,24 @@
 import { forwardRef, Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+
+import { Board } from './entities/board.entity';
 import { BoardsService } from './boards.service';
 import { BoardsController } from './boards.controller';
-import { MemoryBoardRepository } from './boards.repository.memory';
+import { PostgresBoardRepository } from './repository/boards.repository.postgres';
 import { UsersModule } from 'src/users/users.module';
 
+import { BOARD_REPO } from 'src/common/constants';
+
 @Module({
-  imports: [forwardRef(() => UsersModule)],
+  imports: [TypeOrmModule.forFeature([Board]), forwardRef(() => UsersModule)],
   controllers: [BoardsController],
   providers: [
     BoardsService,
     {
-      provide: 'BoardRepository', // 토큰 등록
-      useClass: MemoryBoardRepository, // 실제 구현체
+      provide: BOARD_REPO,
+      useClass: PostgresBoardRepository,
     },
   ],
-  exports: ['BoardRepository'],
+  exports: [BOARD_REPO],
 })
 export class BoardsModule {}
