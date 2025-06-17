@@ -1,0 +1,36 @@
+version: "3.9"
+
+services:
+  api:
+    image: iamdudumon/my-nest-app
+    container_name: nest-api
+    env_file: .env
+    depends_on:
+      - postgres
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    networks:
+      - backend_net
+
+  postgres:
+    image: postgres
+    container_name: postgres-container
+    environment:
+      POSTGRES_USER: nestuser
+      POSTGRES_PASSWORD: nestpass
+      POSTGRES_DB: nestdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - backend_net
+
+networks:
+  backend_net:
+
+volumes:
+  pgdata:
